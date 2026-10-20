@@ -29,10 +29,12 @@ public abstract class Unit {
     public int hashCode (){
         return Objects.hash(this.id);
     }
+
+
     public int takeDamage(int damage){
         return this.health -= damage;
     }
-    public int getHealed (int heal){
+    public int heal(int heal){
         return this.health += heal;
     }
     public boolean isAlive(){
