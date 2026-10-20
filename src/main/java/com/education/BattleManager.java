@@ -20,9 +20,9 @@ public class BattleManager {
                     "2. Heal (+20 HP)");
             int choice = scanner.nextInt();
             if(choice == 1){
-                enemy.takeDamage(hero.getBaseDamage());
-                System.out.println( hero.getName() + " deals " + hero.getBaseDamage() + " to " + enemy.getName() + ".\n" +
-                        enemy.getName() + " has " + enemy.getHealth() + " hp now.\n");
+                enemy.takeDamage(hero.getTotalDamage());
+                System.out.println( hero.getName() + " deals " + hero.getTotalDamage() + " to " + enemy.getName() + ".\n" +
+                        enemy.getName() + " has " + enemy.getHealth() + " hp now.");
                 if(!enemy.isAlive()) {
                     System.out.println("Enemy defeated!");
                     isFighting = false;
@@ -39,9 +39,9 @@ public class BattleManager {
             }
 
             System.out.println("Enemy's turn!");
-            hero.takeDamage(enemy.getBaseDamage());
-            System.out.println( enemy.getName() + " deals " + enemy.getBaseDamage() + " to " + hero.getName() + ".\n" +
-                    hero.getName() + " has " + hero.getHealth() + " hp now.\n");
+            hero.takeDamage(enemy.getTotalDamage());
+            System.out.println( enemy.getName() + " deals " + enemy.getTotalDamage() + " to " + hero.getName() + ".\n" +
+                    hero.getName() + " has " + hero.getHealth() + " hp now.");
             if(!hero.isAlive()) {
                 System.out.println("Hero defeated!");
                 isFighting = false;

@@ -1,5 +1,9 @@
 package com.education.Units;
 
+import com.education.Inventory.Equipment;
+import com.education.Inventory.Inventory;
+import com.education.Items.Weapon;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -8,13 +12,18 @@ public abstract class Unit {
     private String name;
     private int health;
     private int baseDamage;
+    private final Inventory inventory;
+    private final Equipment equipment;
 
     public Unit(String name, int health, int baseDamage) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.health = health;
         this.baseDamage = baseDamage;
+        this.inventory = new Inventory();
+        this.equipment = new Equipment();
     }
+
     @Override
     public boolean equals (Object o){
         if(this == o) return true;
@@ -30,7 +39,6 @@ public abstract class Unit {
         return Objects.hash(this.id);
     }
 
-
     public int takeDamage(int damage){
         return this.health -= damage;
     }
@@ -39,6 +47,30 @@ public abstract class Unit {
     }
     public boolean isAlive(){
         return health > 0;
+    }
+    public int getTotalDamage(){
+        return this.baseDamage + this.equipment.getTotalBonusDamage();
+    }
+
+    public void equip(Weapon weapon){
+        if(this.inventory.hasItem(weapon)){
+            this.inventory.removeItem(weapon);
+            if(this.equipment.getRightHand() != null){
+                this.inventory.addItem(this.equipment.getRightHand());
+            }
+            this.equipment.setRightHand(weapon);
+        }
+        else {
+            System.out.println("The item was not found in your inventory.");
+        }
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public UUID getId() {
