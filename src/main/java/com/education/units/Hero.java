@@ -1,14 +1,14 @@
-package com.education.Units;
+package com.education.units;
 
 public class Hero extends Unit{
     private int lvl;
     private int mana;
 
 
-    public Hero(String name, int health, int baseDamage, int mana, int lvl) {
-        super(name, health, baseDamage);
-        this.mana = mana;
+    public Hero(String name, int health, int maxHealth, int baseDamage, int lvl, int mana) {
+        super(name, maxHealth, baseDamage);
         this.lvl = lvl;
+        this.mana = mana;
     }
 
     public void setLvl(int lvl) {

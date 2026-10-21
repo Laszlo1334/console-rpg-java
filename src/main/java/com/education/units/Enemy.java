@@ -1,10 +1,10 @@
-package com.education.Units;
+package com.education.units;
 
 public class Enemy extends Unit{
     private String type;
 
-    public Enemy(String name, int health, int baseDamage, String type) {
-        super(name, health, baseDamage);
+    public Enemy(String name, int health, int maxHealth, int baseDamage, String type) {
+        super(name, maxHealth, baseDamage);
         this.type = type;
     }
 
