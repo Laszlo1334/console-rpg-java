@@ -1,6 +1,4 @@
-package com.education.Items;
-
-import com.education.Units.Unit;
+package com.education.items;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -10,14 +8,12 @@ public abstract class Item {
     private String name;
     private int price;
     private ItemRarity rarity;
-    private boolean usable;
 
-    public Item(String name, int price, ItemRarity rarity, boolean usable) {
+    public Item(String name, int price, ItemRarity rarity) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.price = price;
         this.rarity = rarity;
-        this.usable = usable;
     }
 
     @Override
@@ -33,14 +29,6 @@ public abstract class Item {
     @Override
     public int hashCode (){
         return Objects.hash(this.id);
-    }
-
-    public void setUsable(boolean usable) {
-        this.usable = usable;
-    }
-
-    public boolean isUsable() {
-        return usable;
     }
 
     public UUID getId() {

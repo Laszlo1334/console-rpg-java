@@ -1,4 +1,4 @@
-package com.education.Items;
+package com.education.items;
 
 public enum ItemRarity {
     COMMON,

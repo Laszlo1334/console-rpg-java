@@ -1,8 +1,9 @@
-package com.education.Units;
+package com.education.units;
 
-import com.education.Inventory.Equipment;
-import com.education.Inventory.Inventory;
-import com.education.Items.Weapon;
+import com.education.inventory.Equipment;
+import com.education.inventory.EquipmentSlot;
+import com.education.inventory.Inventory;
+import com.education.items.EquippableItems.EquippableItem;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -10,15 +11,17 @@ import java.util.UUID;
 public abstract class Unit {
     private final UUID id;
     private String name;
-    private int health;
+    private int maxHealth;
+    private int currentHealth;
     private int baseDamage;
     private final Inventory inventory;
     private final Equipment equipment;
 
-    public Unit(String name, int health, int baseDamage) {
+    public Unit(String name, int maxHealth, int baseDamage) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.health = health;
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
         this.baseDamage = baseDamage;
         this.inventory = new Inventory();
         this.equipment = new Equipment();
@@ -40,28 +43,35 @@ public abstract class Unit {
     }
 
     public int takeDamage(int damage){
-        return this.health -= damage;
+        return this.currentHealth = Math.min(0,this.currentHealth - damage);
     }
-    public int heal(int heal){
-        return this.health += heal;
+    public int heal(int healAmount){
+        return currentHealth = Math.min(this.currentHealth + healAmount, maxHealth);
     }
     public boolean isAlive(){
-        return health > 0;
+        return currentHealth > 0;
     }
     public int getTotalDamage(){
         return this.baseDamage + this.equipment.getTotalBonusDamage();
     }
 
-    public void equip(Weapon weapon){
-        if(this.inventory.hasItem(weapon)){
-            this.inventory.removeItem(weapon);
-            if(this.equipment.getRightHand() != null){
-                this.inventory.addItem(this.equipment.getRightHand());
+    public void equip(EquippableItem item){
+        if(this.inventory.hasItem(item)){
+            this.inventory.removeItem(item);
+            if(this.equipment.isSlotTaken(item.getEquipmentSlot())){
+                this.inventory.addItem(this.equipment.getItemBySlot(item.getEquipmentSlot()));
             }
-            this.equipment.setRightHand(weapon);
+            this.equipment.equipItem(item);
         }
         else {
             System.out.println("The item was not found in your inventory.");
+        }
+    }
+
+    public void unequip (EquipmentSlot slot){
+        EquippableItem item = this.equipment.removeItemBySlot(slot);
+        if(item != null) {
+            this.inventory.addItem(item);
         }
     }
 
@@ -81,9 +91,6 @@ public abstract class Unit {
         return name;
     }
 
-    public int getHealth() {
-        return health;
-    }
 
     public int getBaseDamage() {
         return baseDamage;
@@ -93,8 +100,20 @@ public abstract class Unit {
         this.name = name;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = currentHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getCurrentHealth() {
+        return currentHealth;
     }
 
     public void setBaseDamage(int baseDamage) {

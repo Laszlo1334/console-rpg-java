@@ -1,7 +1,7 @@
-package com.education;
+package com.education.managers;
 
-import com.education.Units.Enemy;
-import com.education.Units.Hero;
+import com.education.units.Enemy;
+import com.education.units.Hero;
 
 import java.util.Scanner;
 
@@ -22,7 +22,7 @@ public class BattleManager {
             if(choice == 1){
                 enemy.takeDamage(hero.getTotalDamage());
                 System.out.println( hero.getName() + " deals " + hero.getTotalDamage() + " to " + enemy.getName() + ".\n" +
-                        enemy.getName() + " has " + enemy.getHealth() + " hp now.");
+                        enemy.getName() + " has " + enemy.getCurrentHealth() + " hp now.");
                 if(!enemy.isAlive()) {
                     System.out.println("Enemy defeated!");
                     isFighting = false;
@@ -32,7 +32,7 @@ public class BattleManager {
             else if(choice == 2){
                 hero.heal(healAmount);
                 System.out.println(hero.getName() + " get healed by " + healAmount + "!\n" +
-                         hero.getName() + " has " + hero.getHealth() + " now.");
+                         hero.getName() + " has " + hero.getCurrentHealth() + " now.");
             }else{
                 System.out.println("You chose wrong option try again!");
                 continue;
@@ -41,7 +41,7 @@ public class BattleManager {
             System.out.println("Enemy's turn!");
             hero.takeDamage(enemy.getTotalDamage());
             System.out.println( enemy.getName() + " deals " + enemy.getTotalDamage() + " to " + hero.getName() + ".\n" +
-                    hero.getName() + " has " + hero.getHealth() + " hp now.");
+                    hero.getName() + " has " + hero.getCurrentHealth() + " hp now.");
             if(!hero.isAlive()) {
                 System.out.println("Hero defeated!");
                 isFighting = false;

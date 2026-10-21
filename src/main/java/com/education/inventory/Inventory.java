@@ -1,7 +1,6 @@
-package com.education.Inventory;
+package com.education.inventory;
 
-import com.education.Items.Item;
-import com.education.Units.Unit;
+import com.education.items.Item;
 
 import java.util.ArrayList;
 import java.util.List;
