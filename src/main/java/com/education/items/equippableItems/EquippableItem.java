@@ -1,4 +1,4 @@
-package com.education.items.EquippableItems;
+package com.education.items.equippableItems;
 
 import com.education.inventory.EquipmentSlot;
 import com.education.items.Item;

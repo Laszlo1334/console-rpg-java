@@ -1,11 +1,12 @@
-package com.education.items.ConsumableItems;
+package com.education.items.consumableItems;
 
-import com.education.items.ConsumableItems.effects.Effect;
 import com.education.items.Item;
 import com.education.items.ItemRarity;
+import com.education.items.consumableItems.effects.Effect;
 import com.education.units.Unit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class ConsumableItem extends Item implements Usable {
@@ -22,8 +23,12 @@ public abstract class ConsumableItem extends Item implements Usable {
         this.effects.forEach((effect)-> effect.apply(target));
     }
 
+    protected void addEffect (Effect effect){
+        this.effects.add(effect);
+    }
+
     public List<Effect> getEffects() {
-        return effects;
+        return Collections.unmodifiableList(this.effects);
     }
 
 }

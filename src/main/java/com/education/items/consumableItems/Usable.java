@@ -1,4 +1,4 @@
-package com.education.items.ConsumableItems;
+package com.education.items.consumableItems;
 
 import com.education.units.Unit;
 
