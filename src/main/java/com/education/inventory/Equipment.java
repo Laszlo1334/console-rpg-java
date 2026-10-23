@@ -1,7 +1,7 @@
 package com.education.inventory;
 
-import com.education.items.EquippableItems.EquippableItem;
-import com.education.items.EquippableItems.Weapon;
+import com.education.items.equippableItems.EquippableItem;
+import com.education.items.equippableItems.Weapon;
 
 import java.util.HashMap;
 import java.util.Map;

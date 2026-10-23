@@ -1,12 +1,12 @@
-package com.education.items.ConsumableItems.effects;
+package com.education.items.consumableItems.effects.instant;
 
+import com.education.items.consumableItems.effects.Effect;
 import com.education.units.Unit;
 
-public abstract class HealthEffect extends Effect{
+public class HealEffect implements Effect {
     private int healAmount;
 
-    public HealthEffect( int healAmount) {
-        super("Healing");
+    public HealEffect(int healAmount) {
         this.healAmount = healAmount;
     }
 

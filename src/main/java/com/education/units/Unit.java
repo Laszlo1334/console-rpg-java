@@ -3,8 +3,12 @@ package com.education.units;
 import com.education.inventory.Equipment;
 import com.education.inventory.EquipmentSlot;
 import com.education.inventory.Inventory;
-import com.education.items.EquippableItems.EquippableItem;
+import com.education.items.consumableItems.effects.buff.Buff;
+import com.education.items.consumableItems.effects.buff.StatType;
+import com.education.items.equippableItems.EquippableItem;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -16,6 +20,7 @@ public abstract class Unit {
     private int baseDamage;
     private final Inventory inventory;
     private final Equipment equipment;
+    private final List<Buff> activeBuffs;
 
     public Unit(String name, int maxHealth, int baseDamage) {
         this.id = UUID.randomUUID();
@@ -25,6 +30,7 @@ public abstract class Unit {
         this.baseDamage = baseDamage;
         this.inventory = new Inventory();
         this.equipment = new Equipment();
+        this.activeBuffs = new ArrayList<>();
     }
 
     @Override
@@ -43,7 +49,7 @@ public abstract class Unit {
     }
 
     public int takeDamage(int damage){
-        return this.currentHealth = Math.min(0,this.currentHealth - damage);
+        return this.currentHealth = Math.max(0,this.currentHealth - damage);
     }
     public int heal(int healAmount){
         return currentHealth = Math.min(this.currentHealth + healAmount, maxHealth);
@@ -52,7 +58,15 @@ public abstract class Unit {
         return currentHealth > 0;
     }
     public int getTotalDamage(){
-        return this.baseDamage + this.equipment.getTotalBonusDamage();
+        int buffsDamage = this.activeBuffs.stream().mapToInt((buff) -> buff.getModifier(StatType.DAMAGE)).sum();
+//        for(Buff buff : this.activeBuffs){
+//            buffsDamage += buff.getModifier(StatType.DAMAGE);
+//        }
+        return this.baseDamage + this.equipment.getTotalBonusDamage() + buffsDamage;
+    }
+
+    public void addBuff(Buff buff){
+        this.activeBuffs.add(buff);
     }
 
     public void equip(EquippableItem item){
@@ -118,6 +132,10 @@ public abstract class Unit {
 
     public void setBaseDamage(int baseDamage) {
         this.baseDamage = baseDamage;
+    }
+
+    public List<Buff> getActiveBuffs() {
+        return activeBuffs;
     }
 
 }
