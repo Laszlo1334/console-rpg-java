@@ -4,33 +4,28 @@ import com.education.inventory.Equipment;
 import com.education.inventory.EquipmentSlot;
 import com.education.inventory.Inventory;
 import com.education.items.consumableItems.effects.buff.Buff;
-import com.education.items.consumableItems.effects.buff.StatType;
+import com.education.items.StatType;
 import com.education.items.equippableItems.EquippableItem;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Unit {
     private final UUID id;
     private String name;
-    private int maxHealth;
     private int currentHealth;
-    private int baseDamage;
     private final Inventory inventory;
     private final Equipment equipment;
     private final List<Buff> activeBuffs;
+    private final Map<StatType, Integer> baseStats;
 
     public Unit(String name, int maxHealth, int baseDamage) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
-        this.baseDamage = baseDamage;
         this.inventory = new Inventory();
         this.equipment = new Equipment();
         this.activeBuffs = new ArrayList<>();
+        this.baseStats = new EnumMap<>(StatType.class);
     }
 
     @Override
@@ -52,17 +47,27 @@ public abstract class Unit {
         return this.currentHealth = Math.max(0,this.currentHealth - damage);
     }
     public int heal(int healAmount){
-        return currentHealth = Math.min(this.currentHealth + healAmount, maxHealth);
+        return currentHealth = Math.min(this.currentHealth + healAmount, this.baseStats.get(StatType.MAX_HEALTH));
     }
     public boolean isAlive(){
         return currentHealth > 0;
     }
     public int getTotalDamage(){
-        int buffsDamage = this.activeBuffs.stream().mapToInt((buff) -> buff.getModifier(StatType.DAMAGE)).sum();
-//        for(Buff buff : this.activeBuffs){
-//            buffsDamage += buff.getModifier(StatType.DAMAGE);
-//        }
-        return this.baseDamage + this.equipment.getTotalBonusDamage() + buffsDamage;
+        return this.baseStats.get(StatType.DAMAGE) + this.equipment.getTotalBonus(StatType.DAMAGE) + this.getTotalBuffBonus(StatType.DAMAGE);
+    }
+
+    public Map<StatType, Integer> getAllStats(){
+        HashMap<StatType, Integer> map = new HashMap<>();
+        for(StatType type : StatType.values()){
+            int equipBonus = this.equipment.getTotalBonus(type);
+            int activeBuffBonus = getTotalBuffBonus(type);
+            map.put(type, equipBonus + activeBuffBonus + this.baseStats.get(type));
+        }
+        return map;
+    }
+
+    public int getTotalBuffBonus (StatType type){
+        return this.activeBuffs.stream().mapToInt((buff -> buff.getModifier(type))).sum();
     }
 
     public void addBuff(Buff buff){
@@ -106,32 +111,21 @@ public abstract class Unit {
     }
 
 
-    public int getBaseDamage() {
-        return baseDamage;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
 
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
+    public Map<StatType, Integer> getBaseStats() {
+        return baseStats;
     }
 
     public int getCurrentHealth() {
         return currentHealth;
-    }
-
-    public void setBaseDamage(int baseDamage) {
-        this.baseDamage = baseDamage;
     }
 
     public List<Buff> getActiveBuffs() {

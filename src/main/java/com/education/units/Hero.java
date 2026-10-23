@@ -2,28 +2,28 @@ package com.education.units;
 
 public class Hero extends Unit{
     private int lvl;
-    private int mana;
+    private int currentMana;
 
 
-    public Hero(String name, int health, int maxHealth, int baseDamage, int lvl, int mana) {
+    public Hero(String name, int health, int maxHealth, int baseDamage, int lvl, int currentMana) {
         super(name, maxHealth, baseDamage);
         this.lvl = lvl;
-        this.mana = mana;
+        this.currentMana = currentMana;
     }
 
     public void setLvl(int lvl) {
         this.lvl = lvl;
     }
 
-    public void setMana(int mana) {
-        this.mana = mana;
+    public void setMana(int currentMana) {
+        this.currentMana = currentMana;
     }
 
     public int getLvl() {
         return lvl;
     }
 
-    public int getMana() {
-        return mana;
+    public int getCurrentMana() {
+        return currentMana;
     }
 }
