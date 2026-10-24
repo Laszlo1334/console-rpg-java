@@ -1,29 +1,33 @@
 package com.education.units;
 
+import com.education.items.StatType;
+
+import java.util.Map;
+
 public class Hero extends Unit{
     private int lvl;
-    private int mana;
+    private int currentMana;
 
 
-    public Hero(String name, int health, int maxHealth, int baseDamage, int lvl, int mana) {
-        super(name, maxHealth, baseDamage);
+    public Hero(String name, Map<StatType, Integer> baseStats,  int lvl) {
+        super(name, baseStats);
         this.lvl = lvl;
-        this.mana = mana;
+        this.currentMana = baseStats.get(StatType.MAX_MANA);
     }
 
     public void setLvl(int lvl) {
         this.lvl = lvl;
     }
 
-    public void setMana(int mana) {
-        this.mana = mana;
+    public void setMana(int currentMana) {
+        this.currentMana = currentMana;
     }
 
     public int getLvl() {
         return lvl;
     }
 
-    public int getMana() {
-        return mana;
+    public int getCurrentMana() {
+        return currentMana;
     }
 }

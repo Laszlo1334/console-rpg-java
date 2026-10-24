@@ -2,20 +2,11 @@ package com.education.items.equippableItems;
 
 import com.education.inventory.EquipmentSlot;
 import com.education.items.ItemRarity;
+import com.education.items.StatType;
 
 public class Weapon extends EquippableItem {
-    private int bonusDamage;
-
     public Weapon(String name, int price, ItemRarity rarity, EquipmentSlot slot, int bonusDamage) {
         super(name, price, rarity, slot);
-        this.bonusDamage = bonusDamage;
-    }
-
-    public void setBonusDamage(int bonusDamage) {
-        this.bonusDamage = bonusDamage;
-    }
-
-    public int getBonusDamage() {
-        return bonusDamage;
+        addBonus(StatType.DAMAGE, bonusDamage);
     }
 }

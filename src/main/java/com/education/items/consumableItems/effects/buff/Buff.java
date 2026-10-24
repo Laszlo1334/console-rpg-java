@@ -1,5 +1,6 @@
 package com.education.items.consumableItems.effects.buff;
 
+import com.education.items.StatType;
 import com.education.items.consumableItems.effects.Effect;
 import com.education.units.Unit;
 

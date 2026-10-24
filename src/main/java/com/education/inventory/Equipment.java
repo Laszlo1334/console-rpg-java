@@ -1,9 +1,9 @@
 package com.education.inventory;
 
+import com.education.items.StatType;
 import com.education.items.equippableItems.EquippableItem;
-import com.education.items.equippableItems.Weapon;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,18 +13,14 @@ public class Equipment {
 
     public Equipment() {
         this.id = UUID.randomUUID();
-        this.equippedItems = new HashMap<>();
+        this.equippedItems = new EnumMap<>(EquipmentSlot.class);
     }
 
-    public int getTotalBonusDamage(){
-        int totalBonus = 0;
-        for(EquippableItem item : this.equippedItems.values()){
-            if(item instanceof Weapon){
-                Weapon weapon = (Weapon) item;
-                totalBonus += weapon.getBonusDamage();
-            }
-        }
-        return totalBonus;
+    public int getTotalBonus(StatType type){
+       return this.equippedItems.values()
+               .stream()
+               .mapToInt(item -> item.getBonus(type))
+               .sum();
     }
 
     public EquippableItem removeItemBySlot(EquipmentSlot slot){
