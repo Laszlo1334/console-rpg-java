@@ -18,14 +18,14 @@ public abstract class Unit {
     private final List<Buff> activeBuffs;
     private final Map<StatType, Integer> baseStats;
 
-    public Unit(String name, int maxHealth, int baseDamage) {
+    public Unit(String name, Map<StatType, Integer> baseStats) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.currentHealth = maxHealth;
+        this.currentHealth = baseStats.get(StatType.MAX_HEALTH);
         this.inventory = new Inventory();
         this.equipment = new Equipment();
         this.activeBuffs = new ArrayList<>();
-        this.baseStats = new EnumMap<>(StatType.class);
+        this.baseStats = baseStats;
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class Unit {
     }
 
     public Map<StatType, Integer> getAllStats(){
-        HashMap<StatType, Integer> map = new HashMap<>();
+        Map<StatType, Integer> map = new EnumMap<>(StatType.class);
         for(StatType type : StatType.values()){
             int equipBonus = this.equipment.getTotalBonus(type);
             int activeBuffBonus = getTotalBuffBonus(type);
