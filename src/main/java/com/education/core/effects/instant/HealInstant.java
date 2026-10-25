@@ -1,12 +1,12 @@
-package com.education.items.consumableItems.effects.instant;
+package com.education.core.effects.instant;
 
-import com.education.items.consumableItems.effects.Effect;
+import com.education.core.effects.Effect;
 import com.education.units.Unit;
 
-public class HealEffect implements Effect {
+public class HealInstant implements Effect {
     private int healAmount;
 
-    public HealEffect(int healAmount) {
+    public HealInstant(int healAmount) {
         this.healAmount = healAmount;
     }
 

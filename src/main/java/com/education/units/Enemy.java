@@ -1,6 +1,6 @@
 package com.education.units;
 
-import com.education.items.StatType;
+import com.education.core.StatType;
 
 import java.util.Map;
 

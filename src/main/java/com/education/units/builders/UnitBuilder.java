@@ -1,6 +1,6 @@
 package com.education.units.builders;
 
-import com.education.items.StatType;
+import com.education.core.StatType;
 import com.education.units.Unit;
 
 import java.util.EnumMap;

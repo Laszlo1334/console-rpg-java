@@ -1,6 +1,7 @@
 package com.education.inventory;
 
 import com.education.items.Item;
+import com.education.items.consumables.ConsumableItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,6 +32,13 @@ public class Inventory {
 
     public List<Item> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    public List<ConsumableItem> getConsumableItems(){
+        return items.stream().
+                filter(item -> item instanceof ConsumableItem)
+                .map(ConsumableItem.class::cast) //cast from Item to ConsumableItem
+                .toList();
     }
 
     public UUID getId() {
