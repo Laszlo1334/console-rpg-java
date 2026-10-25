@@ -1,6 +1,5 @@
 package com.education.units.builders;
 
-import com.education.items.StatType;
 import com.education.units.Hero;
 
 public class HeroBuilder extends UnitBuilder<HeroBuilder>{

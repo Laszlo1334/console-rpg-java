@@ -1,6 +1,6 @@
-package com.education.items.consumableItems.effects.buff;
+package com.education.core.effects.buff;
 
-import com.education.items.StatType;
+import com.education.core.StatType;
 
 public class DamageBuff extends Buff {
     public DamageBuff(String name, int duration, int damage) {

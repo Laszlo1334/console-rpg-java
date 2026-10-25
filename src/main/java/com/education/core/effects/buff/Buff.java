@@ -1,7 +1,7 @@
-package com.education.items.consumableItems.effects.buff;
+package com.education.core.effects.buff;
 
-import com.education.items.StatType;
-import com.education.items.consumableItems.effects.Effect;
+import com.education.core.StatType;
+import com.education.core.effects.Effect;
 import com.education.units.Unit;
 
 import java.util.HashMap;

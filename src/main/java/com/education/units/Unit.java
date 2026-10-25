@@ -3,9 +3,9 @@ package com.education.units;
 import com.education.inventory.Equipment;
 import com.education.inventory.EquipmentSlot;
 import com.education.inventory.Inventory;
-import com.education.items.consumableItems.effects.buff.Buff;
-import com.education.items.StatType;
-import com.education.items.equippableItems.EquippableItem;
+import com.education.core.effects.buff.Buff;
+import com.education.core.StatType;
+import com.education.items.equippables.EquippableItem;
 
 import java.util.*;
 
@@ -55,6 +55,14 @@ public abstract class Unit {
     public int getTotalDamage(){
         return this.baseStats.get(StatType.DAMAGE) + this.equipment.getTotalBonus(StatType.DAMAGE) + this.getTotalBuffBonus(StatType.DAMAGE);
     }
+
+    public void updateBuffs(){
+        activeBuffs.forEach(buff -> {
+            buff.decrementDuration(1);
+        });
+        activeBuffs.removeIf(Buff::isExpired);
+    }
+
 
     public Map<StatType, Integer> getAllStats(){
         Map<StatType, Integer> map = new EnumMap<>(StatType.class);

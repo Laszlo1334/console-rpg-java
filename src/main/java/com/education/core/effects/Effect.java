@@ -1,4 +1,4 @@
-package com.education.items.consumableItems.effects;
+package com.education.core.effects;
 
 import com.education.units.Unit;
 

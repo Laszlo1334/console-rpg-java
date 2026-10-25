@@ -1,4 +1,4 @@
-package com.education.items;
+package com.education.core;
 
 public enum StatType {
     DAMAGE,

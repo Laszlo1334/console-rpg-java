@@ -1,8 +1,9 @@
 package com.education.inventory;
 
-import com.education.items.StatType;
-import com.education.items.equippableItems.EquippableItem;
+import com.education.core.StatType;
+import com.education.items.equippables.EquippableItem;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
@@ -45,7 +46,7 @@ public class Equipment {
     }
 
     public Map<EquipmentSlot, EquippableItem> getEquippedItems() {
-        return equippedItems;
+        return Collections.unmodifiableMap(equippedItems);
     }
 
 }

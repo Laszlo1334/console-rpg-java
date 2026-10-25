@@ -1,9 +1,9 @@
-package com.education.items.equippableItems;
+package com.education.items.equippables;
 
 import com.education.inventory.EquipmentSlot;
 import com.education.items.Item;
 import com.education.items.ItemRarity;
-import com.education.items.StatType;
+import com.education.core.StatType;
 
 import java.util.Collections;
 import java.util.HashMap;
