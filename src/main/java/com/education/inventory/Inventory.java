@@ -18,12 +18,34 @@ public class Inventory {
     }
 
     public void removeItem(Item item){
+        if(item instanceof ConsumableItem newConsumable){
+            for(Item existingItem : this.items){
+                if(existingItem.getName().equals(newConsumable.getName())){
+                    ConsumableItem existingConsumable = (ConsumableItem) existingItem;
+                    existingConsumable.reduceQuantity(1);
+                    if(existingConsumable.isItemsLeft()){
+                        return;
+                    }
+                }
+            }
+
+        }
         this.items.remove(item);
     }
 
     public void addItem(Item item){
+        if(item instanceof ConsumableItem newConsumable){
+            for(Item existingItem : this.items){
+                if(existingItem.getName().equals(newConsumable.getName())){
+                    ConsumableItem existingConsumable = (ConsumableItem) existingItem;
+                    existingConsumable.addQuantity(newConsumable.getQuantity());
+                    return;
+                }
+            }
 
+        }
         this.items.add(item);
+
     }
 
     public boolean hasItem(Item item){

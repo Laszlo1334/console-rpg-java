@@ -1,10 +1,14 @@
 package com.education.units.builders;
 
+import com.education.items.Item;
 import com.education.units.Enemy;
-import com.education.units.Unit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnemyBuilder extends UnitBuilder<EnemyBuilder>{
     private String type;
+    private final List<Item> lootable = new ArrayList<>();
 
     public EnemyBuilder(String name, String type) {
         super(name);
@@ -16,6 +20,10 @@ public class EnemyBuilder extends UnitBuilder<EnemyBuilder>{
         return self();
     }
 
+    public EnemyBuilder addLootableItem (Item item){
+        this.lootable.add(item);
+        return self();
+    }
 
     @Override
     protected EnemyBuilder self() {
@@ -24,6 +32,6 @@ public class EnemyBuilder extends UnitBuilder<EnemyBuilder>{
 
     @Override
     public Enemy build() {
-        return new Enemy(getName(), type,  getBaseStats());
+        return new Enemy(getName(), type,  getBaseStats(), lootable);
     }
 }

@@ -11,10 +11,10 @@ public class UseItemAction implements BattleAction{
     }
 
     @Override
-    public void execute(Unit actor, Unit target) {
-        System.out.println(actor.getName() + " uses " + item.getName() + " on " + target.getName() + "!");
+    public String execute(Unit actor, Unit target) {
         item.use(target);
         actor.getInventory().removeItem(item);
+        return actor.getName() + " uses " + item.getName() + " on " + target.getName() + "!";
     }
 
     @Override
