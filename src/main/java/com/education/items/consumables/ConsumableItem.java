@@ -14,13 +14,16 @@ import java.util.List;
 public abstract class ConsumableItem extends Item implements Usable {
     private final List<Effect> effects;
     private final TargetStrategy targetStrategy;
+    private int quantity;
 
     public ConsumableItem(String name, int price, ItemRarity rarity, TargetStrategy targetStrategy) {
         super(name, price, rarity);
         this.effects = new ArrayList<>();
         this.targetStrategy = targetStrategy;
+        this.quantity = 1;
     }
 
+    public abstract ConsumableItem copy();
 
     @Override
     public void use(Unit target){
@@ -39,4 +42,22 @@ public abstract class ConsumableItem extends Item implements Usable {
         return Collections.unmodifiableList(this.effects);
     }
 
+    public void addQuantity(int amount) {
+        this.quantity += amount;
+    }
+    public void reduceQuantity (int amount){
+        this.quantity -= amount;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public boolean isItemsLeft(){
+        return quantity > 0;
+    }
 }
