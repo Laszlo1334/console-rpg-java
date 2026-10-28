@@ -1,6 +1,7 @@
 package com.education.units;
 
 import com.education.core.DamageType;
+import com.education.core.ResourceType;
 import com.education.inventory.Equipment;
 import com.education.inventory.EquipmentSlot;
 import com.education.inventory.Inventory;
@@ -14,6 +15,7 @@ public abstract class Unit {
     private final UUID id;
     private String name;
     private int currentHealth;
+    private int currentMana;
     private final Inventory inventory;
     private final Equipment equipment;
     private final List<StatusEffect> activeStatusEffects;
@@ -23,25 +25,11 @@ public abstract class Unit {
         this.id = UUID.randomUUID();
         this.name = name;
         this.currentHealth = baseStats.get(StatType.MAX_HEALTH);
+        this.currentMana = baseStats.get(StatType.MAX_MANA);
         this.inventory = new Inventory();
         this.equipment = new Equipment();
         this.activeStatusEffects = new ArrayList<>();
         this.baseStats = baseStats;
-    }
-
-    @Override
-    public boolean equals (Object o){
-        if(this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Unit that = (Unit) o;
-        return (Objects.equals(this.id, that.getId()));
-
-    }
-
-    @Override
-    public int hashCode (){
-        return Objects.hash(this.id);
     }
 
     public int takeDamage(int damage, DamageType type){
@@ -51,6 +39,19 @@ public abstract class Unit {
         int actualDamage = type.calculateActualDamage(damage, resistance);
         this.currentHealth = Math.max(0, currentHealth - actualDamage);
         return actualDamage;
+    }
+
+    public int spendMana(int amount) {
+        currentMana = Math.max(0, currentMana - amount);
+        return amount;
+    }
+
+    public boolean isEnoughMana(int amount) {
+        return currentMana >= amount;
+    }
+
+    public boolean isEnoughHealth(int amount) {
+        return currentHealth > amount;
     }
 
     public int heal(int healAmount){
@@ -164,5 +165,29 @@ public abstract class Unit {
     public List<StatusEffect> getActiveStatusEffects() {
         return activeStatusEffects;
     }
+
+    public void setCurrentMana(int currentMana) {
+        this.currentMana = currentMana;
+    }
+
+    public int getCurrentMana() {
+        return currentMana;
+    }
+
+    @Override
+    public boolean equals (Object o){
+        if(this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Unit that = (Unit) o;
+        return (Objects.equals(this.id, that.getId()));
+
+    }
+
+    @Override
+    public int hashCode (){
+        return Objects.hash(this.id);
+    }
+
 
 }

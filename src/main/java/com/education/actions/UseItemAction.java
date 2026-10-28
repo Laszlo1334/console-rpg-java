@@ -3,12 +3,7 @@ package com.education.actions;
 import com.education.items.consumables.ConsumableItem;
 import com.education.units.Unit;
 
-public class UseItemAction implements BattleAction{
-    private final ConsumableItem item;
-
-    public UseItemAction(ConsumableItem item) {
-        this.item = item;
-    }
+public record UseItemAction(ConsumableItem item) implements BattleAction{
 
     @Override
     public String execute(Unit actor, Unit target) {

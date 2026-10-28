@@ -22,7 +22,7 @@ public class StatusEffect implements Effect {
         return this.modifiers.getOrDefault(stat, 0);
     }
 
-    public String onTick(Unit target){
+    protected String onTick(Unit target){
         return "";
     }
 
