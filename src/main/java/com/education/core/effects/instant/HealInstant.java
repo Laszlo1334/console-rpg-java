@@ -11,9 +11,9 @@ public class HealInstant implements Effect {
     }
 
     @Override
-    public void apply(Unit target){
-        target.heal(this.healAmount);
-        System.out.println(target.getName() + " is healed for " + healAmount);
+    public String apply(Unit target){
+        int receivedHeal = target.heal(this.healAmount);
+        return target.getName() + " is healed for " + receivedHeal;
     }
 
     public void setHealAmount(int healAmount) {

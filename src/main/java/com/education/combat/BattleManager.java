@@ -24,13 +24,11 @@ public class BattleManager {
         ui.showMessage("Battle starts: " + hero.getName() + " vs " + enemy.getName());
 
         while (hero.isAlive() && enemy.isAlive()){
-            hero.updateBuffs();
-            enemy.updateBuffs();
+            ui.showMessage(hero.updateStatusEffects());
 
             playerTurn(hero, enemy);
 
-            hero.updateBuffs();
-            enemy.updateBuffs();
+            ui.showMessage(enemy.updateStatusEffects());
 
             if(enemy.isAlive()){
                 enemyTurn(hero,enemy);

@@ -1,5 +1,6 @@
 package com.education.actions;
 
+import com.education.core.DamageType;
 import com.education.units.Unit;
 
 public class MeleeAttackAction implements BattleAction{
@@ -9,8 +10,8 @@ public class MeleeAttackAction implements BattleAction{
     @Override
     public String execute(Unit actor, Unit target) {
         int totalDamage = actor.getTotalDamage();
-        target.takeDamage(totalDamage);
-        return actor.getName() + " deals " + target.getName() + " " + totalDamage + " damage." + "\n" +
+        int receiveDamage = target.takeDamage(totalDamage, DamageType.PHYSICAL);
+        return actor.getName() + " deals " + target.getName() + " " + receiveDamage + " damage." + "\n" +
                 target.getName() + " now has " + target.getCurrentHealth() + " health.";
 
     }

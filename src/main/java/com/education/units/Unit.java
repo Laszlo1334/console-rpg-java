@@ -1,9 +1,10 @@
 package com.education.units;
 
+import com.education.core.DamageType;
 import com.education.inventory.Equipment;
 import com.education.inventory.EquipmentSlot;
 import com.education.inventory.Inventory;
-import com.education.core.effects.buff.Buff;
+import com.education.core.effects.StatusEffect;
 import com.education.core.StatType;
 import com.education.items.equippables.EquippableItem;
 
@@ -15,7 +16,7 @@ public abstract class Unit {
     private int currentHealth;
     private final Inventory inventory;
     private final Equipment equipment;
-    private final List<Buff> activeBuffs;
+    private final List<StatusEffect> activeStatusEffects;
     private final Map<StatType, Integer> baseStats;
 
     public Unit(String name, Map<StatType, Integer> baseStats) {
@@ -24,7 +25,7 @@ public abstract class Unit {
         this.currentHealth = baseStats.get(StatType.MAX_HEALTH);
         this.inventory = new Inventory();
         this.equipment = new Equipment();
-        this.activeBuffs = new ArrayList<>();
+        this.activeStatusEffects = new ArrayList<>();
         this.baseStats = baseStats;
     }
 
@@ -43,24 +44,36 @@ public abstract class Unit {
         return Objects.hash(this.id);
     }
 
-    public int takeDamage(int damage){
-        return this.currentHealth = Math.max(0,this.currentHealth - damage);
+    public int takeDamage(int damage, DamageType type){
+        StatType defenseStat = type.getResistanceStat();
+        // If defenseStat is null (True Damage), resistance is 0.
+        int resistance = (defenseStat != null)? this.getAllStats().getOrDefault(defenseStat, 0) : 0;
+        int actualDamage = type.calculateActualDamage(damage, resistance);
+        this.currentHealth = Math.max(0, currentHealth - actualDamage);
+        return actualDamage;
     }
+
     public int heal(int healAmount){
         return currentHealth = Math.min(this.currentHealth + healAmount, this.baseStats.get(StatType.MAX_HEALTH));
     }
+
     public boolean isAlive(){
         return currentHealth > 0;
     }
+
     public int getTotalDamage(){
-        return this.baseStats.get(StatType.DAMAGE) + this.equipment.getTotalBonus(StatType.DAMAGE) + this.getTotalBuffBonus(StatType.DAMAGE);
+        return this.baseStats.get(StatType.DAMAGE) + this.equipment.getTotalBonus(StatType.DAMAGE) + this.getTotalStatusEffectModifiersBonus(StatType.DAMAGE);
     }
 
-    public void updateBuffs(){
-        activeBuffs.forEach(buff -> {
-            buff.decrementDuration(1);
-        });
-        activeBuffs.removeIf(Buff::isExpired);
+    public List<String> updateStatusEffects(){
+        List<String> statusLogs = new ArrayList<>();
+        activeStatusEffects.forEach(statusEffect -> {
+            List<String> statusEffectsList = statusEffect.processTurn(this);
+                    statusLogs.addAll(statusEffectsList);
+        }
+        );
+        statusLogs.addAll(this.removeExpiredStatusEffects());
+        return statusLogs;
     }
 
 
@@ -68,18 +81,30 @@ public abstract class Unit {
         Map<StatType, Integer> map = new EnumMap<>(StatType.class);
         for(StatType type : StatType.values()){
             int equipBonus = this.equipment.getTotalBonus(type);
-            int activeBuffBonus = getTotalBuffBonus(type);
-            map.put(type, equipBonus + activeBuffBonus + this.baseStats.get(type));
+            int activeStatusEffectBonus = getTotalStatusEffectModifiersBonus(type);
+            map.put(type, equipBonus + activeStatusEffectBonus + this.baseStats.get(type));
         }
         return map;
     }
 
-    public int getTotalBuffBonus (StatType type){
-        return this.activeBuffs.stream().mapToInt((buff -> buff.getModifier(type))).sum();
+    public int getTotalStatusEffectModifiersBonus(StatType type){
+        return this.activeStatusEffects.stream().mapToInt((statusEffect -> statusEffect.getModifier(type))).sum();
     }
 
-    public void addBuff(Buff buff){
-        this.activeBuffs.add(buff);
+    public void addStatusEffect(StatusEffect statusEffect){
+        this.activeStatusEffects.add(statusEffect);
+    }
+
+    private List<String> removeExpiredStatusEffects(){
+        List<String> expiredEffectsMessage = new ArrayList<>();
+        activeStatusEffects.removeIf(statusEffect -> {
+            if (statusEffect.isExpired()) {
+                expiredEffectsMessage.add(statusEffect.getName() + " has expired.");
+                return true;
+            }
+            return false;
+        });
+        return expiredEffectsMessage;
     }
 
     public void equip(EquippableItem item){
@@ -136,8 +161,8 @@ public abstract class Unit {
         return currentHealth;
     }
 
-    public List<Buff> getActiveBuffs() {
-        return activeBuffs;
+    public List<StatusEffect> getActiveStatusEffects() {
+        return activeStatusEffects;
     }
 
 }
