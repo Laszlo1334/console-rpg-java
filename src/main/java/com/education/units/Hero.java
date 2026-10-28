@@ -6,28 +6,28 @@ import java.util.Map;
 
 public class Hero extends Unit{
     private int lvl;
-    private int currentMana;
+    private int gold;
 
 
-    public Hero(String name, Map<StatType, Integer> baseStats,  int lvl) {
+    public Hero(String name, Map<StatType, Integer> baseStats,  int lvl, int gold) {
         super(name, baseStats);
         this.lvl = lvl;
-        this.currentMana = baseStats.get(StatType.MAX_MANA);
+        this.gold = gold;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
     public void setLvl(int lvl) {
         this.lvl = lvl;
     }
 
-    public void setMana(int currentMana) {
-        this.currentMana = currentMana;
-    }
-
     public int getLvl() {
         return lvl;
-    }
-
-    public int getCurrentMana() {
-        return currentMana;
     }
 }
