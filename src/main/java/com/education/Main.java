@@ -1,6 +1,7 @@
 package com.education;
 
 import com.education.abilities.Ability;
+import com.education.abilities.AbilityFactory;
 import com.education.combat.BattleManager;
 import com.education.combat.targeting.EnemyTargetStrategy;
 import com.education.combat.targeting.TargetStrategy;
@@ -22,19 +23,8 @@ public class Main {
 
         HealthPotion healthPotion = new HealthPotion("Health Potion", 10, ItemRarity.COMMON, 20);
         DamagePotion damagePotion = new DamagePotion("God's Strength", 20, ItemRarity.RARE);
-        Ability fireBallAbility = new Ability(
-                "Fire Ball",
-                new EnemyTargetStrategy(),
-                3,
-                true,
-                "Gives 10 magic damage and apply burning effect for 3 turn."
-        );
-
-        fireBallAbility.addTargetEffect(new DamageInstant(10, DamageType.MAGICAL));
-        fireBallAbility.addResourceCost(ResourceType.MANA, 20);
-        StatusEffect burning = new StatusEffect("Burning", 3);
-        burning.addTickEffect(new DamageInstant(3, DamageType.MAGICAL));
-        fireBallAbility.addTargetEffect(burning);
+        Ability fireBallAbility = AbilityFactory.createFireBall();
+        Ability healAbility = AbilityFactory.createHeal(10);
 
         Hero hero = new HeroBuilder("Hero")
                 .maxHealth(100)
@@ -55,6 +45,7 @@ public class Main {
         hero.getInventory().addItem(healthPotion.copy());
         hero.getInventory().addItem(damagePotion.copy());
         hero.addAbility(fireBallAbility);
+        hero.addAbility(healAbility);
 
         BattleManager battleManager = new BattleManager(new ConsoleUI());
         battleManager.start1v1Battle(hero, enemy);

@@ -21,17 +21,9 @@ public class AbilityBuilder {
     private final List<Effect> selfEffects = new ArrayList<>();
     private final List<Effect> targetEffects = new ArrayList<>();
 
-    public AbilityBuilder(TargetStrategy targetStrategy, String name) {
-        this.targetStrategy = targetStrategy;
-        this.name = name;
-    }
-
-    public AbilityBuilder(String name, TargetStrategy targetStrategy, int baseCooldown, boolean consumeTurn, String description) {
+    public AbilityBuilder(String name, TargetStrategy targetStrategy ) {
         this.name = name;
         this.targetStrategy = targetStrategy;
-        this.baseCooldown = baseCooldown;
-        this.consumeTurn = consumeTurn;
-        this.description = description;
     }
 
     public AbilityBuilder baseCooldown(int baseCooldown){
