@@ -33,6 +33,7 @@ public class Ability {
         this.targetEffects = new ArrayList<>();
     }
 
+
     public boolean canCast (Unit caster, Unit target){
         if(currentCooldown != 0){
             return false;

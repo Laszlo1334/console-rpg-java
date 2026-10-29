@@ -2,13 +2,12 @@ package com.education.units;
 
 import com.education.abilities.Ability;
 import com.education.core.DamageType;
-import com.education.core.ResourceType;
 import com.education.inventory.Equipment;
 import com.education.inventory.EquipmentSlot;
 import com.education.inventory.Inventory;
 import com.education.core.effects.StatusEffect;
 import com.education.core.StatType;
-import com.education.items.equippables.EquippableItem;
+import com.education.items.EquippableItem;
 
 import java.util.*;
 

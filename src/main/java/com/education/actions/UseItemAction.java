@@ -1,6 +1,6 @@
 package com.education.actions;
 
-import com.education.items.consumables.ConsumableItem;
+import com.education.items.ConsumableItem;
 import com.education.units.Unit;
 
 public record UseItemAction(ConsumableItem item) implements BattleAction{

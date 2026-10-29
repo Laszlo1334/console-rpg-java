@@ -6,7 +6,7 @@ import com.education.actions.MeleeAttackAction;
 import com.education.actions.UseAbilityAction;
 import com.education.actions.UseItemAction;
 import com.education.items.Item;
-import com.education.items.consumables.ConsumableItem;
+import com.education.items.ConsumableItem;
 import com.education.ui.ConsoleUI;
 import com.education.units.Enemy;
 import com.education.units.Hero;
@@ -129,7 +129,7 @@ public class BattleManager {
         return ui.selectFromList(
                 "Choose your ability:",
                 heroAbilities,
-                ability -> ability.getName() + " isReady: " + (ability.isReady() ? "Yes": "No"));
+                ability -> ability.getName() + " " + (ability.isReady() ? "Ready": "Not ready"));
 
     }
 
