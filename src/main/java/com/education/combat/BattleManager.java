@@ -1,7 +1,9 @@
 package com.education.combat;
 
+import com.education.abilities.Ability;
 import com.education.actions.BattleAction;
 import com.education.actions.MeleeAttackAction;
+import com.education.actions.UseAbilityAction;
 import com.education.actions.UseItemAction;
 import com.education.items.Item;
 import com.education.items.consumables.ConsumableItem;
@@ -24,11 +26,11 @@ public class BattleManager {
         ui.showMessage("Battle starts: " + hero.getName() + " vs " + enemy.getName());
 
         while (hero.isAlive() && enemy.isAlive()){
-            ui.showMessage(hero.updateStatusEffects());
+            ui.showMessage(hero.onTurnStart());
 
             playerTurn(hero, enemy);
 
-            ui.showMessage(enemy.updateStatusEffects());
+            ui.showMessage(enemy.onTurnStart());
 
             if(enemy.isAlive()){
                 enemyTurn(hero,enemy);
@@ -56,8 +58,9 @@ public class BattleManager {
                     "Choose your action:\n" +
                             "1. Melee attack\n" +
                             "2. Choose item to use\n" +
-                            "3. Skip turn");
-            int choice = ui.getUserIntInput();
+                            "3. Use ability\n" +
+                            "4. Skip turn");
+            int choice = ui.getValidIntInput(1, 4);
             switch (choice){
                 //MeleeAttack choice
                 case 1 : {
@@ -79,14 +82,26 @@ public class BattleManager {
                     }
                     break;
                 }
-                //Skip choice
+                //Use action Choice
                 case 3: {
-                    turnCompleted = true;
+                    Ability selectedAbility = chooseAbility(hero);
+                    if(selectedAbility != null){
+                        if(!selectedAbility.canCast(hero, enemy)){
+                            ui.showMessage("You can't execute chosen ability.");
+                        }else {
+                            //Select abilities target
+                            Unit target = selectedAbility.getTargetStrategy().selectTarget(hero, enemy);
+                            BattleAction useAbilityAction = new UseAbilityAction(selectedAbility);
+                            ui.showMessage(useAbilityAction.execute(hero, target));
+                            turnCompleted = selectedAbility.isConsumeTurn();
+                        }
+                    }
+
                     break;
                 }
-                //Wrong choice
-                default: {
-                    ui.showMessage("You chose wrong option try again!");
+                //Skip choice
+                case 4: {
+                    turnCompleted = true;
                     break;
                 }
             }
@@ -101,44 +116,35 @@ public class BattleManager {
     }
 
     private ConsumableItem chooseItemFromInventory (Hero hero){
-        ui.showMessage("Choose your item: ");
-
         List<ConsumableItem> heroConsumableItems = hero.getInventory().getConsumableItems();
-        //Check if player has consumable items
-        if(heroConsumableItems.isEmpty()){
-            ui.showMessage("You have no consumable items.");
-            return null;
-        }
-        //Printing list of Consumable items
-        for(int i = 0; i < heroConsumableItems.size(); i++){
-            ui.showMessage((i+1) + ". " + heroConsumableItems.get(i).getName() + " (x" + heroConsumableItems.get(i).getQuantity() + ")");
-        }
-        ui.showMessage("0. Go back");
-        //Get player's choice and use the item he had chosen
-        while(true){
-            int choice = ui.getUserIntInput();
-            if(choice == 0) return null;
-            if(choice <= heroConsumableItems.size() && choice > 0){
-                return heroConsumableItems.get(choice - 1);
-            }else {
-                ui.showMessage("Invalid choice, try again!");
-            }
-        }
+        return ui.selectFromList(
+                "Choose your item:",
+                heroConsumableItems,
+                (item -> item.getName() + "(x" + item.getQuantity() + ")"));
+
+    }
+
+    private Ability chooseAbility (Hero hero){
+        List<Ability> heroAbilities = hero.getAbilities();
+        return ui.selectFromList(
+                "Choose your ability:",
+                heroAbilities,
+                ability -> ability.getName() + " isReady: " + (ability.isReady() ? "Yes": "No"));
 
     }
 
     private void lootEnemy (Hero hero, Enemy enemy){
         while(true){
-            List<Item> enemyList = enemy.getLootable();
+            List<Item> enemyLootableList = enemy.getLootable();
             //Check if enemy has loot to take
-            if(enemyList.isEmpty()){
+            if(enemyLootableList.isEmpty()){
                 ui.showMessage("The enemy's pockets are empty.");
                 break;
             }
             //Printing enemy's lootable list
             ui.showMessage("1. Take all items");
             for(int i = 0; i < enemy.getLootable().size(); i++){
-                Item item = enemyList.get(i);
+                Item item = enemyLootableList.get(i);
                 if(item instanceof ConsumableItem consumableItem){
                     ui.showMessage((i + 2) + ". " + consumableItem.getName() + " (x" + consumableItem.getQuantity() + ")");
                 }
@@ -149,26 +155,24 @@ public class BattleManager {
             ui.showMessage("0. Don't take anything");
 
             //Taking player's choice
-            int choice = ui.getUserIntInput();
+            int choice = ui.getValidIntInput(0, enemyLootableList.size() + 1);
 
             if(choice == 0) break;  //if player choose not to take any items
             if(choice == 1){   //if player choose all items
-                for(Item item : enemyList){
+                for(Item item : enemyLootableList){
                     hero.getInventory().addItem(item);
                 }
-                enemyList.clear();
+                enemyLootableList.clear();
                 ui.showMessage("Player looted all items.");
                 return;
             }
-            if(choice <= enemyList.size() + 1 && choice > 1){   //If player choose 1 item
-                Item chosenItem = enemyList.get(choice - 2);
+            if(choice <= enemyLootableList.size() + 1 && choice > 1){   //If player choose 1 item
+                Item chosenItem = enemyLootableList.get(choice - 2);
                 hero.getInventory().addItem(chosenItem);
-                enemyList.remove(chosenItem);
+                enemyLootableList.remove(chosenItem);
                 ui.showMessage("Player looted " + chosenItem.getName());
             }
-            else {   //Invalid choice
-                ui.showMessage("Invalid choice, try again!");
-            }
+
         }
     }
 }

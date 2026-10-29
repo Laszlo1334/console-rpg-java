@@ -83,8 +83,11 @@ public class Ability {
 
     public void decrementCooldown() {
         if (currentCooldown > 0) {
-            currentCooldown--;
+              currentCooldown--;
         }
+    }
+    public boolean isReady(){
+        return currentCooldown == 0;
     }
 
     public String getName() {
