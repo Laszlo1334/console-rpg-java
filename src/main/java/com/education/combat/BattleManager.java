@@ -129,7 +129,7 @@ public class BattleManager {
         return ui.selectFromList(
                 "Choose your ability:",
                 heroAbilities,
-                ability -> ability.getName() + " isReady: " + (ability.isReady() ? "Yes": "No"));
+                ability -> ability.getName() + " " + (ability.isReady() ? "Ready": "Not ready"));
 
     }
 
