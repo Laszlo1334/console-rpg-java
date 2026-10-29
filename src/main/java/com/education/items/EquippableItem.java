@@ -1,15 +1,13 @@
-package com.education.items.equippables;
+package com.education.items;
 
 import com.education.inventory.EquipmentSlot;
-import com.education.items.Item;
-import com.education.items.ItemRarity;
 import com.education.core.StatType;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
-public abstract class EquippableItem extends Item {
+public class EquippableItem extends Item {
     private final EquipmentSlot equipmentSlot;
     private final Map<StatType, Integer> bonuses;
 
@@ -17,10 +15,10 @@ public abstract class EquippableItem extends Item {
     public EquippableItem(String name, int price, ItemRarity rarity, EquipmentSlot equipmentSlot) {
         super(name, price, rarity);
         this.equipmentSlot = equipmentSlot;
-        this.bonuses = new HashMap<>();
+        this.bonuses = new EnumMap<>(StatType.class);
     }
 
-    protected void addBonus(StatType type, int bonus){
+    public void addBonus(StatType type, int bonus){
         this.bonuses.put(type, bonus);
     }
 

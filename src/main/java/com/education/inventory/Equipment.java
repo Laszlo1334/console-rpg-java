@@ -1,7 +1,7 @@
 package com.education.inventory;
 
 import com.education.core.StatType;
-import com.education.items.equippables.EquippableItem;
+import com.education.items.EquippableItem;
 
 import java.util.Collections;
 import java.util.EnumMap;

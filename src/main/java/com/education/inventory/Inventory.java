@@ -1,7 +1,7 @@
 package com.education.inventory;
 
 import com.education.items.Item;
-import com.education.items.consumables.ConsumableItem;
+import com.education.items.ConsumableItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
