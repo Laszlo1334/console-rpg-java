@@ -1,5 +1,6 @@
 package com.education.units;
 
+import com.education.abilities.Ability;
 import com.education.core.DamageType;
 import com.education.core.ResourceType;
 import com.education.inventory.Equipment;
@@ -20,6 +21,7 @@ public abstract class Unit {
     private final Equipment equipment;
     private final List<StatusEffect> activeStatusEffects;
     private final Map<StatType, Integer> baseStats;
+    private final List<Ability> abilities;
 
     public Unit(String name, Map<StatType, Integer> baseStats) {
         this.id = UUID.randomUUID();
@@ -30,6 +32,12 @@ public abstract class Unit {
         this.equipment = new Equipment();
         this.activeStatusEffects = new ArrayList<>();
         this.baseStats = baseStats;
+        this.abilities = new ArrayList<>();
+    }
+
+    public List<String> onTurnStart(){
+        updateAbilitiesCooldown();
+        return updateStatusEffects();
     }
 
     public int takeDamage(int damage, DamageType type){
@@ -66,7 +74,7 @@ public abstract class Unit {
         return this.baseStats.get(StatType.DAMAGE) + this.equipment.getTotalBonus(StatType.DAMAGE) + this.getTotalStatusEffectModifiersBonus(StatType.DAMAGE);
     }
 
-    public List<String> updateStatusEffects(){
+    private List<String> updateStatusEffects(){
         List<String> statusLogs = new ArrayList<>();
         activeStatusEffects.forEach(statusEffect -> {
             List<String> statusEffectsList = statusEffect.processTurn(this);
@@ -106,6 +114,18 @@ public abstract class Unit {
             return false;
         });
         return expiredEffectsMessage;
+    }
+
+    private void updateAbilitiesCooldown(){
+        this.abilities.forEach(Ability::decrementCooldown);
+    }
+
+    public void addAbility (Ability ability){
+        this.abilities.add(ability);
+    }
+
+    public void removeAbility(Ability ability){
+        this.abilities.remove(ability);
     }
 
     public void equip(EquippableItem item){
@@ -172,6 +192,10 @@ public abstract class Unit {
 
     public int getCurrentMana() {
         return currentMana;
+    }
+
+    public List<Ability> getAbilities() {
+        return abilities;
     }
 
     @Override
