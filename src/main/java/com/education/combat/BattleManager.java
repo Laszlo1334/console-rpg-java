@@ -135,7 +135,7 @@ public class BattleManager {
 
     private void lootEnemy (Hero hero, Enemy enemy){
         while(true){
-            List<Item> enemyLootableList = enemy.getLootable();
+            List<Item> enemyLootableList = enemy.getLootableItems();
             //Check if enemy has loot to take
             if(enemyLootableList.isEmpty()){
                 ui.showMessage("The enemy's pockets are empty.");
@@ -143,7 +143,7 @@ public class BattleManager {
             }
             //Printing enemy's lootable list
             ui.showMessage("1. Take all items");
-            for(int i = 0; i < enemy.getLootable().size(); i++){
+            for(int i = 0; i < enemy.getLootableItems().size(); i++){
                 Item item = enemyLootableList.get(i);
                 if(item instanceof ConsumableItem consumableItem){
                     ui.showMessage((i + 2) + ". " + consumableItem.getName() + " (x" + consumableItem.getQuantity() + ")");
