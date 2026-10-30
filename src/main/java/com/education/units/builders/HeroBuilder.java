@@ -27,7 +27,8 @@ public class HeroBuilder extends UnitBuilder<HeroBuilder>{
 
     @Override
     public Hero build() {
-        return new Hero(getName(), getBaseStats(),lvl, gold);
-
+        Hero hero = new Hero(getName(), getBaseStats(),lvl, gold);
+        populateUnit(hero);
+        return hero;
     }
 }

@@ -32,6 +32,8 @@ public class EnemyBuilder extends UnitBuilder<EnemyBuilder>{
 
     @Override
     public Enemy build() {
-        return new Enemy(getName(), type,  getBaseStats(), lootable);
+        Enemy enemy =  new Enemy(getName(), type,  getBaseStats(), lootable);
+        populateUnit(enemy);
+        return enemy;
     }
 }
