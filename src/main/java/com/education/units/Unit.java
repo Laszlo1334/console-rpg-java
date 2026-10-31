@@ -62,7 +62,8 @@ public abstract class Unit {
     }
 
     public int heal(int healAmount){
-        return currentHealth = Math.min(this.currentHealth + healAmount, this.baseStats.get(StatType.MAX_HEALTH));
+        currentHealth = Math.min(this.currentHealth + healAmount, this.baseStats.get(StatType.MAX_HEALTH));
+        return healAmount;
     }
 
     public boolean isAlive(){
@@ -163,11 +164,9 @@ public abstract class Unit {
         return name;
     }
 
-
     public void setName(String name) {
         this.name = name;
     }
-
 
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
